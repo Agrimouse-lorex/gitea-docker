@@ -41,12 +41,12 @@ export default class CreateRepositoryPage extends BasePage {
     async openPage() {
         await this.page.goto('/repo/create');
     }
-    async selectOwner(userName: string) {
+    async selectOwner() {
         await this.ownerField.click();
         const menu = this.page.locator('#repo_owner_dropdown .menu');
         await expect(menu).toBeVisible();
-        await menu.locator('.item', { hasText: userName }).click();
-        await expect(this.ownerField).toContainText(userName);
+        await menu.getByTestId('_aria_auto_id_11').click();
+        await expect(this.ownerField).toContainText("Qa_Auto_User");
     }
 
     async fillRepositoryName(repoName: string) {
@@ -89,16 +89,16 @@ export default class CreateRepositoryPage extends BasePage {
     }
     async selectGitIgnore() {
         await this.gitIgnore.click();
-        const menu = this.page.locator('#_aria_auto_id_29')
+        const menu = this.page.getByTestId('_aria_auto_id_28')
         await expect(menu).toBeVisible();
         await menu.locator('//div[@data-value="Android"]').click();
         await expect(this.page.locator('//a[@data-value="Android"]')).toBeVisible();
     }
     async selectLicense() {
         await this.licenseField.click();
-        const menu = this.page.locator('#_aria_auto_id_300')
+        const menu = this.page.locator('//*[@id="_aria_auto_id_300"]')
         await expect(menu).toBeVisible();
-        await menu.locator('//div[@data-value="EPL-2.0"]').click();
+        await this.page.locator('//div[@data-value="EPL-2.0"]').click();
         await expect(this.page.locator('#non_template > div:nth-child(4) > div > div.text')).toContainText(/EPL-2.0/i);
     }
     async clickInitRepoCheckbox() {
@@ -110,9 +110,9 @@ export default class CreateRepositoryPage extends BasePage {
     }
     async selectObjectFormat() {
         await this.objectFormat.click();
-        const menu = this.page.locator('#_aria_auto_id_332')
+        const menu = this.page.getByTestId('_aria_auto_id_332')
         await expect(menu).toBeVisible();
-        await menu.locator('//div[@data-value="sha256"]').click();
+        await this.page.locator('//div[@data-value="sha256"]').click();
         await expect(this.objectFormat).toContainText(/sha256/i);
     }
     async checkMakeARepoTemplate() {
@@ -121,6 +121,9 @@ export default class CreateRepositoryPage extends BasePage {
     }
     async clickCreateRepoButton() {
         await this.createRepoButton.click();
-}
+    }
+    async verifyEmptyRepoCreated() {
+        await expect(this.page.locator('body > div > div > div.ui.container > div > div > h4')).toHaveText(/Quick Guide/i)
+    }
 }
 // #non_template > div:nth-child(8) > div

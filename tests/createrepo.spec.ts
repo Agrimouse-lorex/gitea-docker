@@ -9,16 +9,15 @@ test.describe('Create New Repository tests', () => {
     const repoName: string = "TestRepositoryName"
     const owner: string = users.testUser1.username
     
-    test.beforeEach(async ({page}) => {
-        repo = new CreateRepositoryPage(page);
+    test.use({storageState: './test-data/test-states/testuser1-state.json'})
+
+    test.beforeEach(async({page}) => {
+        repo = new CreateRepositoryPage(page);  
         signIn = new SignInPage(page)
-        await signIn.openPage();
-        await signIn.signInWithCredentials(users.testUser1.username, users.testUser1.password);
-        await repo.openPage();
-        await repo.expectAllFieldsVisible();
-    })
+        await repo.openPage()
+    })  
     test('Select yourself as owner in Owner Dropdown.', async() => {
-        await repo.selectOwner(users.testUser1.username)
+        await repo.selectOwner() 
     })
 
     test('Fill Repository name.', async() => {
@@ -52,7 +51,7 @@ test.describe('Create New Repository tests', () => {
         // await expect(page).toHaveURL(`/${owner}/${repoName}`)
     })
     test('Create full Repository',async({page}) => {
-        await repo.selectOwner(users.testUser1.username)
+        await repo.selectOwner()
         await repo.fillRepositoryName(repoName)
         await repo.clickRepositoryVisibilityCheckbox();
         await repo.fillDescriptionField('Here should be any text information for the description field')
@@ -62,7 +61,7 @@ test.describe('Create New Repository tests', () => {
         await repo.selectGitIgnore();
         await repo.selectObjectFormat();
         await repo.clickCreateRepoButton();
-        await expect(page).toHaveURL(`/${owner}/${repoName}`)
+        await expect(page.getByTestId('user-content-testrepositoryname')).toHaveText(repoName)
         await page.locator('//span[@data-text="Settings"]').click();
         await page.locator('//button[@data-modal="#delete-repo-modal"]').click();
         await page.locator('#repo_name_to_delete').fill(repoName)
