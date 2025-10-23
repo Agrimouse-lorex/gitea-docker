@@ -45,8 +45,19 @@ export default defineConfig({
     {
       name: 'smoke',
       use: { ...devices['Desktop Chrome'] },
-      testIgnore: '*setup/*.ts',
-      dependencies: ['setup']
+      // Run all non-setup tests except API tests in this project
+      testIgnore: ['*setup/*.ts', 'api-tests/**/*.spec.ts'],
+      // dependencies: ['setup']
+    },
+    {
+      name: 'api',
+      // Limit this project to API tests only
+      testMatch: 'api-tests/**/*.spec.ts',
+      use: {
+        ...devices['Desktop Chrome'],
+        // Use API_URL for API tests
+        baseURL: process.env.API_URL,
+      },
     },
     // {
     //   name: 'chromium',

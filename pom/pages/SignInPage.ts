@@ -22,6 +22,7 @@ export default class SignInPage extends BasePage {
         await this.signInButton.click();
     }
     async signInWithCredentials(username: string, password: string) {
+        await this.openPage();
         await this.fillUsernameField(username);
         await this.fillPasswordField(password);
         await this.clickLoginButton();

@@ -13,7 +13,6 @@ export const test = base.extend<Fixtures>({
   authContext: async ({ browser, baseURL }, use) => {
     const context = await browser.newContext({
       storageState: STORAGE_STATE_PATH,
-      baseURL,
     });
     await use(context);
     await context.close();
