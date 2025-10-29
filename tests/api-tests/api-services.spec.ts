@@ -1,11 +1,14 @@
 import test, {APIRequestContext, expect, request as baseRequest, Page } from '@playwright/test'
 import fs from 'fs';
+import RepositoryService from '../../api/services/RepositoryService';
+import { UserFactory } from '../../api/factory/user.factory';
+import { TestUserResponse } from '../../api/DTO/user.dto';
 
-    let PAT = process.env.ADMIN_TOKEN
+    const PAT = process.env.ADMIN_TOKEN as string
     let ctx;
     let api: APIRequestContext;
     const apiURL = 'http://localhost:3000/api/v1'
-
+    let repositoryService: RepositoryService;
 test.describe('Basic requests as admin user', () => {
     
     const randomPref = Date.now();
@@ -15,38 +18,36 @@ test.describe('Basic requests as admin user', () => {
 
 
 
-    test.beforeAll(async() => {
-        api = await baseRequest.newContext({
-            extraHTTPHeaders: {
-                Authorization: `token ${PAT}`,
-                'Content-Type': 'application/json',
-                },
-            });
+    test.beforeEach(async({request}) => {
+        repositoryService = new RepositoryService(request)
+        repositoryService.setToken(`${PAT}`)
         });
     test.describe('Basic Admin requests', () => {
-        test('Get all emails', async() => {
-                const response = await api.get(`http://localhost:3000/api/v1/admin/emails`)
+        test('Get all emails', async({request}) => {
+                const response = await request.get(`http://localhost:3000/api/v1/admin/emails`)
                     const body = await response.json();
                     console.log(body)
                     await expect(response).toBeOK()
             })  
             test('Get all users', async() => {
-                const response = await api.get(`http://localhost:3000/api/v1/admin/users`)
-                    const body = await response.json();
-                    body.forEach((u:any) => console.log(u.email))
-                    await expect(response).toBeOK()
+                console.log(PAT)
+                const response = await repositoryService.getAllUsersAsAdmin()  
+                const body = await response.json()
+                body.forEach((u:any) => console.log("User ID and Login: ", u.id, u.login, "\nUser Email: ", u.email, "\n"))
             }) 
             test('Create test User',async() => {
-                
-                const response = await api.post('http://localhost:3000/api/v1/admin/users/', {
-                    data: {
-                        email,
-                        username,
-                        password
-                    }
-                })
-                expect(response).toBeOK();
-                console.log(await response.json())
+                const testUser = UserFactory.create();
+                console.log('Admin token:', repositoryService['token']);
+                console.log(process.env.ADMIN_TOKEN);
+                const request = await repositoryService.createUser(testUser)
+                console.log(request.status())
+                const body: TestUserResponse = await request.json();
+                expect(request.status()).toBe(201);
+                console.log("Created user: ", body)
+                expect(body.email).toBe(testUser.email);
+                expect(body.username).toBe(testUser.username);
+                expect(body.id).toBeGreaterThan(0);
+                expect(typeof body.created).toBe('string');
             })
             test('As logged in user, block new-created user in previous test', async() => {
                 const response = await api.put(`http://localhost:3000/api/v1/user/blocks/${username}`,{
@@ -106,11 +107,8 @@ test.describe('Basic requests as admin user', () => {
             expect(response.status()).toBe(204); 
         })
         test('Get repositories list for authenticated user', async() => {
-            const response = await api.get(`${apiURL}/user/repos`)
-            expect(response.status()).toBe(200);
-            console.log("Get repositories list status code: ", response.status());
-            const body = await response.json();
-            console.log("User repositories list: ", body);
+            const repos = await repositoryService.getAllUserRepositories()
+            console.log("User repositories list: ", repos);
         })
         test('Create new repository for authenticated user', async() => {
 
