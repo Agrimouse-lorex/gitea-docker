@@ -2,7 +2,7 @@ import { expect, Locator, Page } from "@playwright/test";
 import BasePage from "../BasePage";
 
 export default class CreateRepositoryPage extends BasePage {
-    private readonly ownerField: Locator = this.page.locator('#repo_owner_dropdown');
+    private readonly ownerField: Locator = this.page.locator('//div[@id="repo_owner_dropdown"]');
     readonly repositoryNameField: Locator = this.page.locator('//input[@id="repo_name"]');
     private readonly visibilityCheckbox: Locator = this.page.locator('//input[@name="private"]')
     private readonly descriptionField: Locator = this.page.getByTestId('description')

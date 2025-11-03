@@ -40,14 +40,14 @@ export default defineConfig({
       name: 'setup',
       use: { ...devices['Desktop Chrome'] },
       testMatch: '*setup/*.ts',
-      testIgnore: 'createsaveuser.spec.ts'
+      testIgnore: 'login.saveState.spec.ts'
     },
     {
       name: 'smoke',
       use: { ...devices['Desktop Chrome'] },
       // Run all non-setup tests except API tests in this project
       testIgnore: ['*setup/*.ts', 'api-tests/**/*.spec.ts'],
-      // dependencies: ['setup']
+      dependencies: ['setup']
     },
     {
       name: 'api',
