@@ -4,8 +4,9 @@ export interface RepoRequest {
   description: string;
 }
 export interface RepoResponse {
-    name: string
-    link: string;
-    description: string;
-    created: string;
+  id: number;  
+  name: string
+  link: string;
+  description: string;
+  created: string;
 }
