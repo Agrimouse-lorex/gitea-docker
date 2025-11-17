@@ -93,8 +93,16 @@ test.describe('tests with Repository Service included', () => {
           })
           test('Get newly created repository', async() => {
             const response = await repositoryService.getRepo(owner, repo)
-            console.log(response)
+            console.log("Repository created in that test: ", response)
           })
+          test('Change repositories properties', async() => {
+            const defaultBranch: string = 'main-patched'
+            const request = await repositoryService.patchRepo(owner,repo,defaultBranch)
+            console.log("Repository is patched: ",request)
+            repo = request.name
+            console.log(repo)
+          })
+
           
     })
 })

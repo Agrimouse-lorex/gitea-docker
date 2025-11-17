@@ -36,5 +36,21 @@ export default class RepositoryService {
             }
             return repo;
         }
+        async patchRepo(owner: string, repoName: string, defaultBranch: string) {
+            const request = await this.request.patch(`/api/v1/repos/${owner}/${repoName}`,{
+                headers: this.headers,
+                data: {
+                    "name": "Repo_patched",
+                    default_branch: defaultBranch,
+                    description: "Description is changed by using Auto-test scripts",
+                    "allow_manual_merge": true,
+                    "allow_merge_commits": true,
+                }
+            })
+            expect(request.status()).toBe(200);
+            const response = request.json();
+            return response;
+        }
+        
         
 }
