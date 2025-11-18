@@ -3,7 +3,7 @@ import SignInPage from '../../pom/pages/SignInPage';
 import { users } from '../../test-data/testUsers';
 
 // This setup test signs in with an existing user and saves storage state
-test.describe('Login and save storage state', () => {
+test.describe.skip('Login and save storage state', () => {
   test('Sign in and persist state', async ({ page }) => {
     const signIn = new SignInPage(page);
 

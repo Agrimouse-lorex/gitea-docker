@@ -100,9 +100,6 @@ test.describe('tests with Repository Service included', () => {
             const request = await repositoryService.patchRepo(owner,repo,defaultBranch)
             console.log("Repository is patched: ",request)
             repo = request.name
-            console.log(repo)
           })
-
-          
     })
 })

@@ -1,48 +1,23 @@
-version: "3.9"
+version: "3"
 
 services:
   gitea:
     image: gitea/gitea:latest
     container_name: gitea
-    restart: unless-stopped
+    restart: no
     ports:
       - "3000:3000"
-    volumes:
-      - gitea-data:/data
-    environment:
-      # Preseed install to skip the setup wizard and use SQLite
-      - GITEA__security__INSTALL_LOCK=true
-      - GITEA__database__DB_TYPE=sqlite3
-      - GITEA__database__PATH=/data/gitea/gitea.db
-      - GITEA__server__DOMAIN=gitea
-      - GITEA__server__ROOT_URL=http://gitea:3000/
-      - GITEA__server__DISABLE_SSH=true
-      # Keep self-registration enabled for tests
-      - GITEA__service__DISABLE_REGISTRATION=false
-      - GITEA__service__REGISTER_EMAIL_CONFIRM=false
-      - GITEA__mailer__ENABLED=false
-
-  gitea-init:
-    image: gitea/gitea:latest
-    depends_on:
-      - gitea
-    volumes:
-      - gitea-data:/data
-    # Wait briefly, then create the test/admin user if it does not exist
-    entrypoint: ["/bin/sh","-c","sleep 15; /usr/local/bin/gitea admin user create --username 'olektrom' --password 'Test123!' --email 'olektrom@qamadness.com' --admin --must-change-password=false --config /data/gitea/conf/app.ini || true"]
-    restart: "no"
 
   tests:
     build:
       context: .
+      dockerfile: Dockerfile
     depends_on:
       - gitea
-      - gitea-init
     environment:
-      - BASE_URL=http://gitea:3000
-    # Wait for TCP 3000, then run tests
-    command: ["/bin/bash","-lc","until (</dev/tcp/gitea/3000) >/dev/null 2>&1; do echo 'Waiting for Gitea...'; sleep 2; done; npm test"]
-
-volumes:
-  gitea-data:
-
+      BASE_WEB_URL: http://gitea:3000
+    volumes:
+      - ./playwright-report:/app/playwright-report
+    command: >
+      sh -c "npx playwright install && npx playwright test"
+    restart: no

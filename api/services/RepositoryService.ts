@@ -37,10 +37,11 @@ export default class RepositoryService {
             return repo;
         }
         async patchRepo(owner: string, repoName: string, defaultBranch: string) {
+            const datePref = Date.now(); 
             const request = await this.request.patch(`/api/v1/repos/${owner}/${repoName}`,{
                 headers: this.headers,
                 data: {
-                    "name": "Repo_patched",
+                    "name": `Repo_patched_${datePref}`,
                     default_branch: defaultBranch,
                     description: "Description is changed by using Auto-test scripts",
                     "allow_manual_merge": true,
