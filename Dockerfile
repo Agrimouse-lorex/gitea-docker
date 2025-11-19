@@ -16,5 +16,5 @@ COPY . .
 ENV NODE_ENV=production
 
 # Default command runs the tests
-CMD ["npm", "test"]
+CMD ["npx", "playwright", "test"]
 

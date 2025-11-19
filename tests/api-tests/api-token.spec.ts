@@ -1,7 +1,7 @@
 import test, {APIRequestContext, expect, request as baseRequest, Page } from '@playwright/test'
 import fs from 'fs';
 
-    let PAT = process.env.ADMIN_TOKEN
+    let PAT = process.env.ADMIN_TOKEN_AUTO
     let ctx;
     let api: APIRequestContext;
     const apiURL = 'http://localhost:3000/api/v1'

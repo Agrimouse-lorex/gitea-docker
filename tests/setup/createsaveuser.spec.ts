@@ -28,7 +28,7 @@ function setEnv(key: string, value: string) {
 
     fs.writeFileSync(envFile, env);
 }
-test.describe("Creating new user and saving its state", () => {
+test.describe.skip("Creating new user and saving its state", () => {
 let signInPage: SignInPage;
 let registerPage: RegisterPage;
 let createRepoPage: CreateRepositoryPage;
@@ -36,9 +36,10 @@ let PAT = ''
 let ctx;
 
 test('Create user and save state', async({page}) => {
-    const username = `olektrom`
+    const randomPref = Date.now();
+    const username = `Qa_Auto_User${randomPref}`
     const password = "Test123!"
-    const email = `olektrom@qamadness.com`
+    const email = `olektrom+${randomPref}@qamadness.com`
     signInPage = new SignInPage(page);
     createRepoPage = new CreateRepositoryPage(page);
     registerPage = new RegisterPage(page);

@@ -6,7 +6,7 @@ import { RepoFactory } from '../../api/factory/repo.factory';
 import { RepoResponse } from '../../api/DTO/repo.dto';
 import MainService from '../../api/services/MainService';
 
-    const PAT = process.env.ADMIN_TOKEN as string
+    const PAT = process.env.ADMIN_TOKEN_AUTO as string
     let mainService: MainService;
     let repositoryService: RepositoryService
 test.describe('API tests with Service, DTO, Factory architecture', () => {

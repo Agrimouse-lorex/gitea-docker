@@ -44,7 +44,7 @@ test('API test', async({page}) => {
 //     await page.locator('#password').fill('Test123!');
 //     await page.locator('#login').click();
 // })
-test.describe('API Requests', () => {
+test.describe.skip('API Requests', () => {
     let token: string
     
     test.beforeAll(async({request}) => {

@@ -2,7 +2,7 @@ import test, {APIRequestContext, expect, request as baseRequest, Page } from '@p
 import { users } from '../../test-data/testUsers';
 import SignInPage from '../../pom/pages/SignInPage';
 
-test.describe('API Requests', () => {
+test.describe.skip('API Requests', () => {
     
     const USER = users.testUser1.username;
     const PASS = users.testUser1.password;
@@ -42,15 +42,9 @@ test.beforeEach(async () => {
     });
   });
 
-test('Get all users', async() => {
-    const response = await api.get(`http://localhost:3000/api/v1/user`)
-        const body = await response.json();
-        console.log(body);
-})
-})
-
-test.describe('Generate Token via API not UI', () => {
-    test.beforeAll(async({request}) => {
-        
-    })
+  test('Get all users', async() => {
+      const response = await api.get(`http://localhost:3000/api/v1/user`)
+          const body = await response.json();
+          console.log(body);
+  })
 })

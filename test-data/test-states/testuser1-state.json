@@ -2,7 +2,7 @@
   "cookies": [
     {
       "name": "i_like_gitea",
-      "value": "360561be4e0ccbf5",
+      "value": "eeac47ff24f9b708",
       "domain": "localhost",
       "path": "/",
       "expires": -1,
@@ -22,10 +22,10 @@
     },
     {
       "name": "_csrf",
-      "value": "qBxODc91tDyM1NVbgKUZIT79aLo6MTc2MzQ3OTQ4NzM5NTMxNTMxMg",
+      "value": "fTDjGUmKdVzvZMkZ6-weaWeyf6U6MTc2MzU2NzQzMjQzNTI3Njc1MQ",
       "domain": "localhost",
       "path": "/",
-      "expires": 1763565887.408193,
+      "expires": 1763653832.446625,
       "httpOnly": true,
       "secure": false,
       "sameSite": "Lax"
