@@ -7,6 +7,7 @@ export default class MainService {
         private request: APIRequestContext
         private token?: string
 
+        
         constructor(request: APIRequestContext, token?: string) {
             this.request = request
             this.token = token

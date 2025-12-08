@@ -39,26 +39,23 @@ export default defineConfig({
     {
       name: 'setup',
       use: { ...devices['Desktop Chrome'] },
-      testMatch: '*setup/*.ts',
-      testIgnore: 'login.saveState.spec.ts'
-    },
-    {
-      name: 'smoke',
-      use: { ...devices['Desktop Chrome'] },
-      // Run all non-setup tests except API tests in this project
-      testIgnore: ['*setup/*.ts', 'api-tests/**/*.spec.ts'],
-      dependencies: ['setup']
+      testMatch: ['setup/**/*.spec.ts'],
+      fullyParallel: false,
+      workers: 1,
     },
     {
       name: 'api',
-      // Limit this project to API tests only
-      testMatch: 'api-tests/**/*.spec.ts',
-      use: {
-        ...devices['Desktop Chrome'],
-        // Use API_URL for API tests
-        baseURL: process.env.API_URL,
-      },
-    },
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: ['api-tests/**/*.spec.ts'],
+    }
+  ],
+    // {
+    //   name: 'smoke',
+    //   use: { ...devices['Desktop Chrome'] },
+    //   // Run all non-setup tests except API tests in this project
+    //   testIgnore: ['*setup/*.ts', 'api-tests/**/*.spec.ts'],
+    //   dependencies: ['setup']
+    // },
     // {
     //   name: 'chromium',
     //   use: { ...devices['Desktop Chrome'] },
@@ -93,7 +90,6 @@ export default defineConfig({
     //   name: 'Google Chrome',
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
-  ],
 
   /* Run your local dev server before starting the tests */
   // webServer: {

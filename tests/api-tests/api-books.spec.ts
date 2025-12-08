@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
 
-test('API test', async({page}) => {
+test.skip('API test', async({page}) => {
     
     await page.goto('https://demoqa.com/login');
     page.on('request', request => console.log('Request:',

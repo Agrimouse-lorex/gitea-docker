@@ -3,7 +3,7 @@ version: "3"
 services:
   gitea:
     image: gitea/gitea:latest
-    container_name: gitea
+    container_name: gitea-test
     restart: no
     ports:
       - "3000:3000"
@@ -12,12 +12,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: gitea-tests
     depends_on:
       - gitea
     environment:
       BASE_WEB_URL: http://gitea:3000
     volumes:
       - ./playwright-report:/app/playwright-report
-    command: >
-      sh -c "npx playwright install && npx playwright test"
+    command: sh -c "npx playwright install && npx playwright test --project=setup && npx playwright test --project=api"
     restart: no

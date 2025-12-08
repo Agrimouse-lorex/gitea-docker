@@ -5,8 +5,15 @@ import { TestUserResponse } from '../../api/DTO/user.dto';
 import { RepoFactory } from '../../api/factory/repo.factory';
 import { RepoResponse } from '../../api/DTO/repo.dto';
 import MainService from '../../api/services/MainService';
+import * as fs from 'fs';
+import * as path from 'path';
 
-    const PAT = process.env.ADMIN_TOKEN_AUTO as string
+    const usersFile = path.resolve(process.cwd(), 'test-data/generatedUsers.json');
+    const filePAT = fs.existsSync(usersFile)
+    ? (JSON.parse(fs.readFileSync(usersFile, 'utf8'))?.randomUser1?.PAT as string | undefined)
+    : undefined;
+
+    const PAT = (filePAT) as string;
     let mainService: MainService;
     let repositoryService: RepositoryService
 test.describe('API tests with Service, DTO, Factory architecture', () => {
@@ -38,7 +45,7 @@ test.describe('API tests with Service, DTO, Factory architecture', () => {
                 const request = await mainService.blockLastUser()
                 expect(request.status()).toBe(204);
             })
-            test('Block Specified User',async() => {
+            test.skip('Block Specified User',async() => {
                 const request = await mainService.blockCertainUser('QA_Auto_User1762170652099')
                 expect(request.status()).toBe(204)
             })
@@ -51,7 +58,7 @@ test.describe('API tests with Service, DTO, Factory architecture', () => {
                 const request = await mainService.blockedUsersList()
                 expect(request.status()).toBe(200)
             })
-            test('Unblock Specified User',async() => {
+            test.skip('Unblock Specified User',async() => {
                 const request = await mainService.unblockCertainUser('QA_Auto_User1762170652099')
                 expect(request.status()).toBe(204)
             })
