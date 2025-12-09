@@ -71,6 +71,5 @@ Docker Compose (one command)
 
 CI pipelines
 
-- GitHub Actions: `.github/workflows/e2e.yml` runs `docker compose up` on every push/PR.
-- Gitea Actions: `.gitea/workflows/e2e.yml` does the same on a Gitea instance with Actions enabled.
-- Local dry-run is the same as above: `docker compose up --build --abort-on-container-exit --exit-code-from tests`
+- Disabled for now. There are no active CI workflows in the repo.
+- You can still run locally: `docker compose up --build --abort-on-container-exit --exit-code-from tests`
