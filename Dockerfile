@@ -4,6 +4,16 @@ FROM mcr.microsoft.com/playwright:v1.55.0-jammy
 
 WORKDIR /app
 
+# Install system dependencies required for Chromium to run properly in Docker
+RUN apt-get update && apt-get install -y \
+    dbus \
+    dbus-x11 \
+    libgbm1 \
+    libxss1 \
+    libnss3 \
+    libasound2 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install deps first to leverage Docker layer caching
 COPY package*.json ./
 RUN npm ci --no-audit --no-fund
@@ -16,5 +26,4 @@ COPY . .
 ENV NODE_ENV=production
 
 # Default command runs the tests
-CMD ["npm", "test"]
-
+CMD ["npx", "playwright", "test"]

@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import {test} from '../fixtures/fixtures'
+import {test} from '../../fixtures/fixtures'
 
 test.describe('Create New Repository tests', () => {
     test.use({storageState: './test-data/test-states/testuser1-state.json'})

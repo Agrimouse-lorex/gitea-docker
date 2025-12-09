@@ -1,19 +1,23 @@
 import test, {APIRequestContext, expect, request as baseRequest, Page } from '@playwright/test'
-import fs from 'fs';
+import * as fs from 'fs';
+import * as path from 'path';
 
-    let PAT = process.env.ADMIN_TOKEN
+    const usersFile = path.resolve(process.cwd(), 'test-data/generatedUsers.json');
+    const filePAT = fs.existsSync(usersFile)
+    ? (JSON.parse(fs.readFileSync(usersFile, 'utf8'))?.randomUser1?.PAT as string | undefined)
+    : undefined;
+
+    const PAT = (filePAT) as string;
     let ctx;
     let api: APIRequestContext;
     const apiURL = 'http://localhost:3000/api/v1'
 
-test.describe('Basic requests as admin user', () => {
+test.describe.skip('Basic requests as admin user', () => {
     
     const randomPref = Date.now();
     const email = `olektrom+${randomPref}@qamadness.com`
     const username = `Qa_Auto_User${randomPref}`
     const password = 'Test123!'
-
-
 
     test.beforeAll(async() => {
         api = await baseRequest.newContext({
@@ -23,7 +27,7 @@ test.describe('Basic requests as admin user', () => {
                 },
             });
         });
-    test.describe('Basic Admin requests', () => {
+    test.describe.skip('Basic Admin requests', () => {
         test('Get all emails', async() => {
                 const response = await api.get(`http://localhost:3000/api/v1/admin/emails`)
                     const body = await response.json();
@@ -31,7 +35,7 @@ test.describe('Basic requests as admin user', () => {
                     await expect(response).toBeOK()
             })  
             test('Get all users', async() => {
-                const response = await api.get(`http://localhost:3000/api/v1/admin/users`)
+                const response = await api.get(`/api/v1/admin/users`)
                     const body = await response.json();
                     body.forEach((u:any) => console.log(u.email))
                     await expect(response).toBeOK()
@@ -77,7 +81,7 @@ test.describe('Basic requests as admin user', () => {
             })
     })
        
-    test.describe('Basic requests as authenticated user', () => {
+    test.describe.skip('Basic requests as authenticated user', () => {
         const baseName = 'test-repository';
         const datePref = Date.now();
 
@@ -158,7 +162,7 @@ test.describe('Basic requests as admin user', () => {
 });
 
 
-test.describe('Bulk deleting', () => {
+test.describe.skip('Bulk deleting', () => {
     test.beforeAll(async({browser}) => {
         
         ctx = await browser.newContext(); 

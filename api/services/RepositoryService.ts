@@ -1,6 +1,6 @@
 import {APIRequestContext, APIResponse, expect} from '@playwright/test'
 import { TestUserCreate, TestUserResponse } from '../DTO/user.dto';
-import { RepoRequest } from '../DTO/repo.dto';
+import { RepoRequest, RepoResponse } from '../DTO/repo.dto';
 import fs from 'fs';
 
 export default class RepositoryService {
@@ -21,122 +21,37 @@ export default class RepositoryService {
                 'Content-Type': 'application/json'
             }
         }
-
-        async getAllUserRepositories() {
-            const response = await this.request.get(`/api/v1/user/repos`, {
+        async getRepo(owner: string, repoName: string) {
+            const request = await this.request.get(`/api/v1/repos/${owner}/${repoName}`,{
                 headers: this.headers
             })
-            expect(response.status()).toBe(200);
-            return await response.json()
-        }
-
-        async getAllUsersAsAdmin() {
-            const response = await this.request.get(`/api/v1/admin/users`, {
-                headers: this.headers
-            })
-            if (!response.ok) {
-                console.log("Can not get users, check your admin token")
+            expect((request).status()).toBe(200)
+            const body = await request.json()
+            const repo: RepoResponse = {
+                id: body.id,
+                name: body.name,
+                link: body.link,
+                description: body.description,
+                created: body.created_at
             }
-            return response  
+            return repo;
         }
-        async createUser(userData: TestUserCreate): Promise<APIResponse> {
-            return this.request.post('/api/v1/admin/users/', {
-                headers: this.headers,
-                data: userData 
-            });
-        }
-        async blockLastUser() {
-            const getUser = await this.request.get('/api/v1/admin/users', {
-                headers: this.headers
-            })
-            expect(getUser.status()).toBe(200)
-            const body = await getUser.json()
-            const users = await body.sort((a: { id: number; }, b: { id: number; }) => b.id - a.id); // Sorts in descending order of ID
-            const lastUser = users[0];
-            const username = await lastUser.login
-            console.log("Blocked User: ", username)
-            const response = await this.request.put(`/api/v1/user/blocks/${username}`,{
+        async patchRepo(owner: string, repoName: string, defaultBranch: string) {
+            const datePref = Date.now(); 
+            const request = await this.request.patch(`/api/v1/repos/${owner}/${repoName}`,{
                 headers: this.headers,
                 data: {
-                        "username": `${username}`
-                    }
-            })
-            return response
-        }
-        async unblockLastUser() {
-                        const getUser = await this.request.get('/api/v1/admin/users', {
-                headers: this.headers
-            })
-            expect(getUser.status()).toBe(200)
-            const body = await getUser.json()
-            const users = await body.sort((a: { id: number; }, b: { id: number; }) => b.id - a.id); // Sorts in descending order of ID
-            const lastUser = users[0];
-            const username = await lastUser.login
-            const response = await this.request.delete(`/api/v1/user/blocks/${username}`,{
-                headers: this.headers,
-                data: {
-                        "username": `${username}`
-                    }
-            })
-            return response
-        }
-        async blockCertainUser(username: string) {
-                const response = await this.request.put(`/api/v1/user/blocks/${username}`,{
-                headers: this.headers,
-                data: {
-                        "username": `${username}`
-                    }
-            })
-            return response
-        }
-        async unblockCertainUser(username: string) {
-                const response = await this.request.delete(`/api/v1/user/blocks/${username}`,{
-                headers: this.headers,
-                data: {
-                        "username": `${username}`
-                    }
-            })
-            return response
-        }
-        async blockUserCheck(username: string) {
-            const response = await this.request.get(`/api/v1/user/blocks/${username}`,{
-                headers: this.headers,
-            })
-            return response
-        }
-        async blockedUsersList() { 
-            const response = await this.request.get('/api/v1/user/blocks',{
-                headers: this.headers
-            })
-            return response
-        }
-        async avatarPost() {
-            const filePath = 'D:/gitea-docker-lesson-22/gitea-docker/images/Jeff.jpg';
-            const base64img = fs.readFileSync(filePath, {encoding: 'base64'})
-            const response = await this.request.post('/api/v1/user/avatar', {
-                headers: this.headers,
-                data: {
-                    image: base64img
+                    "name": `Repo_patched_${datePref}`,
+                    default_branch: defaultBranch,
+                    description: "Description is changed by using Auto-test scripts",
+                    "allow_manual_merge": true,
+                    "allow_merge_commits": true,
                 }
             })
-            return response
+            expect(request.status()).toBe(200);
+            const response = request.json();
+            return response;
         }
-        async avatarDelete() {
-            return this.request.delete('/api/v1/user/avatar', {
-                headers: this.headers
-            })
-        }
-        async getRepoList() {
-            const response = await this.request.get('/api/v1/user/repos', {
-                headers: this.headers
-            })
-            expect(response.status()).toBe(200);
-            return response.json()
-        }
-        async createRepo(repo: RepoRequest): Promise<APIResponse> {
-            return this.request.post('/api/v1/user/repos', {
-                headers: this.headers,
-                data: repo
-            })
-        }
+        
+        
 }

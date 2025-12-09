@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import CreateRepositoryPage from '../pom/pages/CreateRepositoryPage';
-import SignInPage from '../pom/pages/SignInPage';
-import { users } from '../test-data/testUsers';
+import CreateRepositoryPage from '../../pom/pages/CreateRepositoryPage';
+import SignInPage from '../../pom/pages/SignInPage';
+import { users } from '../../test-data/testUsers';
 
 test.describe('Create New Repository tests', () => {
     let signIn: SignInPage;

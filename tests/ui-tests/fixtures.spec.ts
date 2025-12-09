@@ -1,5 +1,5 @@
 import { chromium} from "@playwright/test"
-import { test } from "../fixtures/fixtureBase"
+import { test } from "../../fixtures/fixtureBase"
 
 test("Open page without fixture",async() => {
     const browser = await chromium.launch();
