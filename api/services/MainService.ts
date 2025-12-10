@@ -113,15 +113,16 @@ export default class MainService {
             return response
         }
         async avatarPost() {
-            const filePath = path.resolve(process.cwd(), 'images/Jeff.jpg');
-            const base64img = fs.readFileSync(filePath, {encoding: 'base64'})
+            const filePath = path.resolve(process.cwd(), 'images', 'Jeff.jpg');
+            if (!fs.existsSync(filePath)) {
+                throw new Error(`Avatar file not found inside container at ${filePath}`);
+            }
+            const base64img = fs.readFileSync(filePath, { encoding: 'base64' });
             const response = await this.request.post('/api/v1/user/avatar', {
                 headers: this.headers,
-                data: {
-                    image: base64img
-                }
-            })
-            return response
+                data: { image: base64img }
+            });
+            return response;
         }
         async avatarDelete() {
             return this.request.delete('/api/v1/user/avatar', {
