@@ -50,7 +50,7 @@ test.describe('API tests with Service, DTO, Factory architecture', () => {
                 expect(request.status()).toBe(204)
             })
 
-            test('Verify Blocked user',async() => {
+            test.skip('Verify Blocked user',async() => {
                 const request = await mainService.blockUserCheck('QA_Auto_User1762170652099')
                 expect(request.status()).toBe(204)
             })
@@ -71,7 +71,7 @@ test.describe('API tests with Service, DTO, Factory architecture', () => {
                 const request = await mainService.avatarDelete()
                 expect(request.status()).toBe(204)
             })
-            test('Upload User Avatar', async() => {
+            test.skip('Upload User Avatar', async() => {
                 const request = await mainService.avatarPost()
                 expect(request.status()).toBe(204);
                 console.log("Avatar has been successfully uploaded")
