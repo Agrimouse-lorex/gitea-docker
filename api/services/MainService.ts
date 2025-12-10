@@ -2,6 +2,7 @@ import {APIRequestContext, APIResponse, expect} from '@playwright/test'
 import { TestUserCreate, TestUserResponse } from '../DTO/user.dto';
 import { RepoRequest } from '../DTO/repo.dto';
 import fs from 'fs';
+import path from 'path/win32';
 
 export default class MainService {
         private request: APIRequestContext
@@ -112,7 +113,7 @@ export default class MainService {
             return response
         }
         async avatarPost() {
-             const filePath = '../../images/Jeff.jpg';
+            const filePath = path.resolve(process.cwd(), 'images/Jeff.jpg');
             const base64img = fs.readFileSync(filePath, {encoding: 'base64'})
             const response = await this.request.post('/api/v1/user/avatar', {
                 headers: this.headers,

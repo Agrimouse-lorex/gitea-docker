@@ -71,7 +71,7 @@ test.describe('API tests with Service, DTO, Factory architecture', () => {
                 const request = await mainService.avatarDelete()
                 expect(request.status()).toBe(204)
             })
-            test.skip('Upload User Avatar', async() => {
+            test('Upload User Avatar', async() => {
                 const request = await mainService.avatarPost()
                 expect(request.status()).toBe(204);
                 console.log("Avatar has been successfully uploaded")
