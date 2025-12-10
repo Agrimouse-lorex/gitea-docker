@@ -19,5 +19,6 @@ services:
       BASE_WEB_URL: http://gitea:3000
     volumes:
       - ./playwright-report:/app/playwright-report
+      - ./images:/app/images
     command: sh -c "npx playwright install && npx playwright test --project=setup && npx playwright test --project=api"
     restart: no
