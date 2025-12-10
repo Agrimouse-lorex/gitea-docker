@@ -1,6 +1,3 @@
-
-import * as fs from 'fs';
-import * as path from 'path';
 import { test } from '@playwright/test';
 import RegisterPage from '../../pom/pages/RegisterPage';
 import Header from '../../pom/modules/Header';

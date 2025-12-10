@@ -4,7 +4,7 @@ import BasePage from '../BasePage';
 export default class Header extends BasePage {
 
     private readonly userAvatar: Locator = this.page.locator('.navbar-right img');
-    private readonly settingsMenuItem: Locator = this.page.locator('#_aria_auto_id_8');
+    private readonly settingsMenuItem: Locator = this.page.locator('//a[@href="/user/settings"]');
 
     async clickUserAvatar() {
         await this.userAvatar.click();
